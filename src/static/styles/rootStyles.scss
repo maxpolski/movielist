@@ -1,0 +1,74 @@
+*:focus {
+  outline: none
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  background-color: #f4f5f9;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+  cursor: pointer;
+}
+
+button {
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+button:focus {
+  outline: none;
+}
+
+ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+i,
+img,
+svg {
+  vertical-align: middle;
+}
+
+input {
+  background: transparent;
+  outline: none;
+  border: none;
+}
+
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+  -webkit-box-shadow: 0 0 0 30px white inset;
+}
