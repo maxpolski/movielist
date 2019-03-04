@@ -13,10 +13,10 @@ function* fetchMoviesSaga() {
     id: data.imdbID,
     icon: data.Poster,
     title: data.Title,
-    genre: data.Genre,
-    year: data.Year,
+    genre: data.Genre.split(', ').length ? data.Genre.split(', ')[0] : data.Genre,
+    year: Number.parseInt(data.Year, 10),
     director: data.Director,
-    runtime: data.Runtime,
+    runtime: Number.parseInt(data.Runtime.split(' ')[0], 10),
   }))
 
   yield put(getMoviesCompleted(movies))

@@ -9,6 +9,7 @@ module.exports = {
         'brace-style': ['error', '1tbs'],
         curly: ['error', 'all'],
         semi: ['error', 'never'],
-        'react/jsx-filename-extension': [2, { extensions: ['.js'] }]
+        'react/jsx-filename-extension': ['error', { extensions: ['.js'] }],
+        'no-console': 'error'
       },
 };

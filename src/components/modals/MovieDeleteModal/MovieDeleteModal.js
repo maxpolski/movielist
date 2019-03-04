@@ -14,7 +14,7 @@ import { hideDeleteMovieModal as hideDeleteMovieModalAction } from '../../../sto
 import { deleteMovie as deleteMovieAction } from '../../../store/actions/movies'
 import { getDataForMovieToDelete } from '../../../store/selectors/ui'
 
-import styles from './MovieDeleteModal.style'
+import styles from '../common/styles/MovieModal.style'
 
 const MovieDeleteModal = (props) => {
   const {
@@ -26,7 +26,7 @@ const MovieDeleteModal = (props) => {
     },
   } = props
   return (
-    <Dialog open={shouldShow} onClose={() => {}}>
+    <Dialog open={shouldShow} onClose={hideDeleteMovieModal}>
       <DialogTitle>Are you sure want to delete this movie?</DialogTitle>
       <DialogActions>
         <Button onClick={hideDeleteMovieModal} color="primary">
@@ -51,12 +51,12 @@ MovieDeleteModal.propTypes = {
   shouldShow: PropTypes.bool.isRequired,
   hideDeleteMovieModal: PropTypes.func.isRequired,
   deleteMovie: PropTypes.func.isRequired,
-  movie: PropTypes.objectOf({
+  movie: PropTypes.shape({
     title: PropTypes.string,
     id: PropTypes.string,
     icon: PropTypes.string,
     director: PropTypes.string,
-    runtime: PropTypes.string,
+    runtime: PropTypes.number,
     genre: PropTypes.string,
     year: PropTypes.number,
   }).isRequired,

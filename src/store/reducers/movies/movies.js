@@ -1,10 +1,21 @@
 import { handleActions } from 'redux-actions'
 
-import { getMoviesCompleted, deleteMovie } from '../../actions/movies'
-import { ADD_MOVIE_COMPLETED } from '../../constants/movies'
+import {
+  addMovie, getMoviesCompleted, deleteMovie, editMovie,
+} from '../../actions/movies'
 
 export default handleActions({
   [getMoviesCompleted]: (state, action) => [...action.payload],
   [deleteMovie]: (state, action) => state.filter(m => m.id !== action.payload),
-  [ADD_MOVIE_COMPLETED]: (state, action) => [...state, action.payload],
+  [editMovie]: (state, action) => {
+    const movieToEditIndex = state.findIndex(m => m.id === action.payload.id)
+    return [
+      ...state.slice(0, movieToEditIndex),
+      {
+        ...action.payload,
+      },
+      ...state.slice(movieToEditIndex + 1),
+    ]
+  },
+  [addMovie]: (state, action) => [...state, action.payload],
 }, [])

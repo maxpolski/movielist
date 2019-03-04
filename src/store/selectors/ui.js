@@ -1,8 +1,18 @@
 import { createSelector } from 'reselect'
 
-// eslint-disable-next-line
+const getAllMovies = state => state.movies
+
+export const getMovieById = (movies, movieId) => movies.find(m => m.id === movieId)
+
 export const getDataForMovieToDelete = createSelector(
-  state => state.movies,
+  getAllMovies,
   state => state.ui.modals.movieToDeleteId,
-  (movies, movieId) => movies.find(m => m.id === movieId),
+  getMovieById,
 )
+export const getDataForMovieToEdit = createSelector(
+  getAllMovies,
+  state => state.ui.modals.movieToEditId,
+  getMovieById,
+)
+
+export const getShownModal = state => state.ui.modals.shownModal

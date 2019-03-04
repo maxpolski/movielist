@@ -16,11 +16,33 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import IconButton from '@material-ui/core/IconButton'
 import EditIco from '@material-ui/icons/Edit'
 import DeleteIco from '@material-ui/icons/Delete'
+import AddIco from '@material-ui/icons/Add'
 
 import { getMovies as getMoviesAction } from '../../store/actions/movies'
-import { showDeleteMovieModal as showDeleteMovieModalAction } from '../../store/actions/modals'
+import {
+  showDeleteMovieModal as showDeleteMovieModalAction,
+  showEditMovieModal as showEditMovieModalAction,
+  showAddMovieModal as showAddMovieModalAction,
+} from '../../store/actions/modals'
 
 import styles from './MovieList.styles'
+
+const transformTitle = (title) => {
+  const removeSpecChars = sentence => sentence.split('').filter(c => /\w|\s/.test(c)).join('')
+  const capitalize = sentence => sentence.split(' ').map(
+    word => `${word.charAt(0).toUpperCase()}${word.slice(1)}`,
+  ).join(' ')
+
+  /* It could be written down with pipelines syntax in the following way
+  * ```
+  * title |> removeSpecChars |> capitalize
+  * ```
+  * but it requires the corresponding babel plugin
+  * which in its turn requires react-app-rewired to be installed
+  * as for me it is an overkill to add all these tools to enable one single feature
+  */
+  return compose(removeSpecChars, capitalize)(title)
+}
 
 class MovieList extends Component {
   componentDidMount() {
@@ -39,11 +61,21 @@ class MovieList extends Component {
     showDeleteMovieModal(movieId)
   }
 
+  showEditMoviePopupHandler = movieId => () => {
+    const {
+      showEditMovieModal,
+    } = this.props
+
+    showEditMovieModal(movieId)
+  }
+
   render() {
     const {
       movies,
       classes,
+      showAddMovieModal,
     } = this.props
+
     return (
       <div className={classnames(classes.root, 'container-fluid')}>
         <div className="row flex-wrap justify-content-center">
@@ -59,7 +91,9 @@ class MovieList extends Component {
                       primary={(
                         <>
                           <Typography variant="h6" color="textPrimary">
-                            {movie.title}
+                            {
+                              transformTitle(movie.title)
+                            }
                           </Typography>
                           {movie.genre}
                         </>
@@ -67,7 +101,7 @@ class MovieList extends Component {
                       secondary={(
                         <>
                           <Typography component="span" color="textPrimary">
-                            {`${movie.year}, ${movie.runtime}`}
+                            {`${movie.year}, ${movie.runtime} min`}
                           </Typography>
                           {movie.director}
                         </>
@@ -80,7 +114,7 @@ class MovieList extends Component {
                         <DeleteIco />
                       </IconButton>
                       <IconButton
-                        onClick={() => {}}
+                        onClick={this.showEditMoviePopupHandler(movie.id)}
                       >
                         <EditIco />
                       </IconButton>
@@ -88,6 +122,13 @@ class MovieList extends Component {
                   </ListItem>
                 ))}
               </List>
+              <IconButton
+                aria-label="Delete"
+                className={classnames(classes.addBtn, 'ml-auto')}
+                onClick={showAddMovieModal}
+              >
+                <AddIco />
+              </IconButton>
             </div>
           </div>
         </div>
@@ -97,18 +138,20 @@ class MovieList extends Component {
 }
 
 MovieList.propTypes = {
-  movies: PropTypes.arrayOf({
+  movies: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
     id: PropTypes.string,
     icon: PropTypes.string,
     director: PropTypes.string,
-    runtime: PropTypes.string,
+    runtime: PropTypes.number,
     genre: PropTypes.string,
     year: PropTypes.number,
-  }).isRequired,
+  })).isRequired,
   classes: PropTypes.shape({ [PropTypes.string]: PropTypes.string }).isRequired,
   getMovies: PropTypes.func.isRequired,
   showDeleteMovieModal: PropTypes.func.isRequired,
+  showEditMovieModal: PropTypes.func.isRequired,
+  showAddMovieModal: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
@@ -118,6 +161,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   getMovies: getMoviesAction,
   showDeleteMovieModal: showDeleteMovieModalAction,
+  showEditMovieModal: showEditMovieModalAction,
+  showAddMovieModal: showAddMovieModalAction,
 }
 
 const enhancers = compose(
