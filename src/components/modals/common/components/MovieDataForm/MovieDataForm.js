@@ -117,7 +117,7 @@ class MovieDataForm extends Component {
             }}
           />
           <Field
-            label="Poster"
+            label="Poster URL"
             fullWidth
             validate={[required, isUrl]}
             component={TextField}
