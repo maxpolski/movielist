@@ -20,7 +20,8 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.0.2",
     "reselect": "^4.0.0",
-    "typeface-roboto": "^0.0.54"
+    "typeface-roboto": "^0.0.54",
+    "uniqid": "^5.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

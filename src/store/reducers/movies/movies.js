@@ -1,7 +1,10 @@
 import { handleActions } from 'redux-actions'
 
 import {
-  addMovie, getMoviesCompleted, deleteMovie, editMovie,
+  getMoviesCompleted,
+  deleteMovie,
+  editMovie,
+  addMovieCompleted,
 } from '../../actions/movies'
 
 export default handleActions({
@@ -17,5 +20,5 @@ export default handleActions({
       ...state.slice(movieToEditIndex + 1),
     ]
   },
-  [addMovie]: (state, action) => [...state, action.payload],
+  [addMovieCompleted]: (state, action) => [...state, action.payload],
 }, [])

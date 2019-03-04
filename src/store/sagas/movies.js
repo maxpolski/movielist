@@ -1,9 +1,10 @@
 import {
   takeEvery, call, put,
 } from 'redux-saga/effects'
+import createId from 'uniqid'
 
-import { GET_MOVIES } from '../constants/movies'
-import { getMoviesCompleted } from '../actions/movies'
+import { GET_MOVIES, ADD_MOVIE } from '../constants/movies'
+import { getMoviesCompleted, addMovieCompleted } from '../actions/movies'
 import { getMovies } from '../../api/movies'
 
 function* fetchMoviesSaga() {
@@ -22,4 +23,10 @@ function* fetchMoviesSaga() {
   yield put(getMoviesCompleted(movies))
 }
 
-export default [takeEvery(GET_MOVIES, fetchMoviesSaga)]
+function* addMovieSaga(action) {
+  const id = createId()
+
+  yield put(addMovieCompleted({ ...action.payload, id }))
+}
+
+export default [takeEvery(GET_MOVIES, fetchMoviesSaga), takeEvery(ADD_MOVIE, addMovieSaga)]

@@ -11,12 +11,13 @@ import {
   Field,
   SubmissionError,
   reduxForm,
+  reset as resetFormAction,
 } from 'redux-form'
 import Button from '@material-ui/core/Button'
 import { TextField } from 'redux-form-material-ui'
 import InputAdornment from '@material-ui/core/InputAdornment'
 
-import { required } from '../../../../../utils/validators'
+import { required, isUrl } from '../../../../../utils/validators'
 import { getShownModal, getDataForMovieToEdit } from '../../../../../store/selectors/ui'
 import { MOVIE_ADD_MODAL, MOVIE_EDIT_MODAL } from '../../../../../store/constants/modals'
 import {
@@ -36,7 +37,6 @@ class MovieDataForm extends Component {
     const {
       modalName,
       addMovie,
-      hideEditMovieDataModal,
     } = this.props
 
     const {
@@ -59,7 +59,18 @@ class MovieDataForm extends Component {
       addMovie(values)
     }
 
+    this.handleClose()
+  }
+
+  handleClose = () => {
+    const {
+      hideEditMovieDataModal,
+      reset,
+      modalName,
+    } = this.props
+
     hideEditMovieDataModal()
+    reset(modalName)
   }
 
   checkIsDuplicatingName = (newTitle, movieId) => {
@@ -83,13 +94,12 @@ class MovieDataForm extends Component {
       handleSubmit,
       isShown,
       modalName,
-      hideEditMovieDataModal,
     } = this.props
 
     const modalTitle = modalName === MOVIE_ADD_MODAL ? 'New Movie' : 'Edit Movie'
 
     return (
-      <Modal open={isShown} onClose={hideEditMovieDataModal}>
+      <Modal open={isShown} onClose={this.handleClose}>
         <form className={classes.paper} onSubmit={handleSubmit(this.handleSubmitClick)}>
           <Typography variant="h6">
             {modalTitle}
@@ -100,6 +110,18 @@ class MovieDataForm extends Component {
             validate={[required]}
             component={TextField}
             name="title"
+            type="text"
+            className={classes.inputField}
+            FormHelperTextProps={{
+              className: classes.errorLabel,
+            }}
+          />
+          <Field
+            label="Poster"
+            fullWidth
+            validate={[required, isUrl]}
+            component={TextField}
+            name="icon"
             type="text"
             className={classes.inputField}
             FormHelperTextProps={{
@@ -136,7 +158,7 @@ class MovieDataForm extends Component {
             }}
           />
           <DialogActions>
-            <Button onClick={hideEditMovieDataModal}>
+            <Button onClick={this.handleClose}>
               Cancel
             </Button>
             <Button type="submit">Save</Button>
@@ -166,6 +188,7 @@ const mapDispatchToProps = {
   editMovie: editMovieAction,
   hideEditMovieDataModal: hideEditMovieDataModalAction,
   addMovie: addMovieAction,
+  reset: resetFormAction,
 }
 
 const initialValues = {
@@ -186,6 +209,7 @@ MovieDataForm.propTypes = {
   }).isRequired,
   hideEditMovieDataModal: PropTypes.func.isRequired,
   addMovie: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
   isShown: PropTypes.bool.isRequired,
   movies: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
