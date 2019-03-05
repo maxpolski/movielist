@@ -35,7 +35,7 @@ const transformTitle = (title) => {
 
   /* It could be written down with pipelines syntax in the following way
   * ```
-  * title |> removeSpecChars |> capitalize
+  * title |> capitalize |> removeSpecChars
   * ```
   * but it requires the corresponding babel plugin
   * which in its turn requires react-app-rewired to be installed
