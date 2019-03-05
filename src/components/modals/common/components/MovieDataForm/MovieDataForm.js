@@ -17,7 +17,7 @@ import Button from '@material-ui/core/Button'
 import { TextField } from 'redux-form-material-ui'
 import InputAdornment from '@material-ui/core/InputAdornment'
 
-import { required, isUrl } from '../../../../../utils/validators'
+import { required } from '../../../../../utils/validators'
 import { getShownModal, getDataForMovieToEdit } from '../../../../../store/selectors/ui'
 import { MOVIE_ADD_MODAL, MOVIE_EDIT_MODAL } from '../../../../../store/constants/modals'
 import {
@@ -119,7 +119,6 @@ class MovieDataForm extends Component {
           <Field
             label="Poster URL"
             fullWidth
-            validate={[required, isUrl]}
             component={TextField}
             name="icon"
             type="text"

@@ -1,18 +1,15 @@
 export default () => ({
-  listItem: {
-    marginBottom: 10,
-    backgroundColor: '#fff',
-    alignItems: 'flex-start',
-  },
-  list: {
-    paddingBottom: 0,
+  media: {
+    height: 450,
   },
   addBtn: {
     marginTop: 10,
     marginRight: 5,
-    backgroundColor: '#fff',
+    backgroundColor: '#e0e0e0',
   },
   root: {
-    height: '100%',
+    flexGrow: 1,
+    overflow: 'hidden',
+    padding: '50px',
   },
 })

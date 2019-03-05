@@ -6,16 +6,14 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
 import withStyles from '@material-ui/core/styles/withStyles'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import Avatar from '@material-ui/core/Avatar'
-import ListItemText from '@material-ui/core/ListItemText'
+import Grid from '@material-ui/core/Grid'
+import Card from '@material-ui/core/Card'
+import CardMedia from '@material-ui/core/CardMedia'
+import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
 import Typography from '@material-ui/core/Typography'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
-import EditIco from '@material-ui/icons/Edit'
-import DeleteIco from '@material-ui/icons/Delete'
 import AddIco from '@material-ui/icons/Add'
 
 import { getMovies as getMoviesAction } from '../../store/actions/movies'
@@ -30,6 +28,8 @@ import styles from './MovieList.styles'
 const transformTitle = (title) => {
   const removeSpecChars = sentence => sentence.split('').filter(c => /\w|\s/.test(c)).join('')
   const capitalize = sentence => sentence.split(' ').map(
+    word => word.split('').map(l => l.toLowerCase()).join(''),
+  ).map(
     word => `${word.charAt(0).toUpperCase()}${word.slice(1)}`,
   ).join(' ')
 
@@ -78,59 +78,79 @@ class MovieList extends Component {
 
     return (
       <div className={classnames(classes.root, 'container-fluid')}>
-        <div className="row flex-wrap justify-content-center">
-          <div className="col-xs-12 col-sm-8">
-            <div className="row flex-column">
-              <List className={classnames(classes.list, 'col-12')}>
-                {movies.map(movie => (
-                  <ListItem key={movie.id} className={classes.listItem}>
-                    <ListItemAvatar>
-                      <Avatar alt={`${movie.title} poster`} src={movie.icon} />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={(
-                        <>
-                          <Typography variant="h6" color="textPrimary">
-                            {
-                              transformTitle(movie.title)
-                            }
-                          </Typography>
-                          {movie.genre}
-                        </>
-                      )}
-                      secondary={(
-                        <>
-                          <Typography component="span" color="textPrimary">
-                            {`${movie.year}, ${movie.runtime} min`}
-                          </Typography>
-                          {movie.director}
-                        </>
-                      )}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        onClick={this.showDeleteMoviePopupHandler(movie.id)}
-                      >
-                        <DeleteIco />
-                      </IconButton>
-                      <IconButton
-                        onClick={this.showEditMoviePopupHandler(movie.id)}
-                      >
-                        <EditIco />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))}
-              </List>
-              <IconButton
-                aria-label="Delete"
-                className={classnames(classes.addBtn, 'ml-auto')}
-                onClick={showAddMovieModal}
+
+        <div className="row flex-column">
+          <Grid
+            container
+            spacing={24}
+          >
+            {movies.map(movie => (
+              <Grid
+                lg={3}
+                md={4}
+                sm={6}
+                xs={12}
+                item
+                key={movie.id}
               >
-                <AddIco />
-              </IconButton>
-            </div>
-          </div>
+                <Card>
+                  <CardMedia
+                    className={classes.media}
+                    image={movie.icon || 'https://media.wired.com/photos/5b7350e75fc74d47846ce4e4/master/pass/Popcorn-869302844.jpg'}
+                    title={`${movie.title} poster`}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {transformTitle(movie.title)}
+                    </Typography>
+                    <Typography component="p">
+                      Year:
+                      {' '}
+                      {movie.year}
+                    </Typography>
+                    <Typography component="p">
+                      Runtime:
+                      {' '}
+                      {`${movie.runtime} min`}
+                    </Typography>
+                    <Typography component="p">
+                      Genre:
+                      {' '}
+                      {movie.genre}
+                    </Typography>
+                    <Typography component="p">
+                      Director:
+                      {' '}
+                      {movie.director}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      onClick={this.showEditMoviePopupHandler(movie.id)}
+                      size="small"
+                      color="primary"
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      onClick={this.showDeleteMoviePopupHandler(movie.id)}
+                      size="small"
+                      color="primary"
+                    >
+                      Delete
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+          <IconButton
+            aria-label="Delete"
+            className={classnames(classes.addBtn, 'ml-auto')}
+            onClick={showAddMovieModal}
+          >
+            <AddIco />
+          </IconButton>
         </div>
       </div>
     )
