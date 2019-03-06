@@ -26,7 +26,7 @@ import {
 import styles from './MovieList.styles'
 
 const transformTitle = (title) => {
-  const removeSpecChars = sentence => sentence.split('').filter(c => /\w|\s/.test(c)).join('')
+  const removeSpecChars = sentence => sentence.split('').filter(c => /[A-Za-z]+|\s/.test(c)).join('')
   const capitalize = sentence => sentence.split(' ').map(
     word => word.split('').map(l => l.toLowerCase()).join(''),
   ).map(
@@ -35,13 +35,13 @@ const transformTitle = (title) => {
 
   /* It could be written down with pipelines syntax in the following way
   * ```
-  * title |> capitalize |> removeSpecChars
+  * title |> removeSpecChars |> capitalize
   * ```
   * but it requires the corresponding babel plugin
   * which in its turn requires react-app-rewired to be installed
   * as for me it is an overkill to add all these tools to enable one single feature
   */
-  return compose(removeSpecChars, capitalize)(title)
+  return compose(capitalize, removeSpecChars)(title)
 }
 
 class MovieList extends Component {
