@@ -6,6 +6,11 @@ export const getMovies = () => {
     'The Grand Budapest Hotel',
     'isle of dogs',
     'the double',
+    'moonrise kingdom',
+    'star wars',
+    'Inglourious Basterds',
+    'kill bill',
+    'django unchained',
   ]
 
   return Promise.all(
