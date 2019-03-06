@@ -26,7 +26,7 @@ import {
 import styles from './MovieList.styles'
 
 const transformTitle = (title) => {
-  const removeSpecChars = sentence => sentence.split('').filter(c => /[A-Za-z]+|\s/.test(c)).join('')
+  const removeSpecChars = sentence => sentence.split('').filter(c => /[A-Za-z0-9]+|\s/.test(c)).join('')
   const capitalize = sentence => sentence.split(' ').map(
     word => word.split('').map(l => l.toLowerCase()).join(''),
   ).map(
